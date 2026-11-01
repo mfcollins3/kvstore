@@ -93,6 +93,7 @@ func put(ctx context.Context, client *http.Client, key, value string) error {
 		return err
 	}
 
+	req.Header.Set("Content-Type", "text/plain; charset=utf-8")
 	ctxReq := req.WithContext(ctx)
 	resp, err := client.Do(ctxReq)
 	if err != nil {
@@ -103,7 +104,8 @@ func put(ctx context.Context, client *http.Client, key, value string) error {
 		_ = resp.Body.Close()
 	}()
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusCreated &&
+		resp.StatusCode != http.StatusNoContent {
 		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 

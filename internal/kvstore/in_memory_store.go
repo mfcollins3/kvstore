@@ -20,6 +20,8 @@
 
 package kvstore
 
+import "strings"
+
 // InMemoryStore implements a key-value store where the data is kept entirely in
 // memory. Because the InMemoryStore keeps all data in memory, the data will be
 // lost when the InMemoryStore goes away when the server program completes.
@@ -39,12 +41,12 @@ func NewInMemoryStore() InMemoryStore {
 // the key was found. If the key is not found, the value that is returned will
 // be an empty string and the present value will be false.
 func (s InMemoryStore) Get(key string) (value string, present bool) {
-	value, present = s[key]
+	value, present = s[strings.ToLower(key)]
 	return
 }
 
 // Set stores a key-value pair into the InMemoryStore. If the key already exists
 // in the store, the value will be updated to the new value.
 func (s InMemoryStore) Set(key, value string) {
-	s[key] = value
+	s[strings.ToLower(key)] = value
 }
